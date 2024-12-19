@@ -1,4 +1,4 @@
-import { bucket, table } from "./storage";
+import { table } from "./storage";
 
 // Create the API
 // We are creating an API using SST’s Api component. It creates an Amazon API Gateway HTTP API.
@@ -16,3 +16,4 @@ export const api = new sst.aws.ApiGatewayV2("Api", {
 
 // The first route we are adding to our API is the POST /notes route. It’ll be used to create a note.
 api.route("POST /notes", "packages/functions/src/create.main");
+api.route("GET /notes/{id}", "packages/functions/src/get.main");
