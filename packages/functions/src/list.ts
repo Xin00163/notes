@@ -11,7 +11,7 @@ export const main = Util.handler(async (event) => {
     // 'KeyConditionExpression' defines the condition for the query 'userId = :userId': only return items with matching 'userId' patrition key
     KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ":userId": "123",
+      ":userId": event.requestContext.authorizer?.iam.cognitoIdentity.identityId,
     },
   };
   const result = await dynamoDb.send(new QueryCommand(params));
@@ -19,3 +19,5 @@ export const main = Util.handler(async (event) => {
   // Return the matching list of items in reponse body
   return JSON.stringify(result.Items);
 });
+
+
