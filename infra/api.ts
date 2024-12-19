@@ -10,6 +10,9 @@ export const api = new sst.aws.ApiGatewayV2("Api", {
         // We are linking our DynamoDB table to our API using the link prop. This will allow our API to access our table.
         link: [table],
       },
+      args: {
+        auth: { iam: true },
+      },
     },
   },
 });
