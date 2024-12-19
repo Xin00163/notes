@@ -1,8 +1,18 @@
-import { bucket } from "./storage";
+import { bucket, table } from "./storage";
 
-export const api = new sst.aws.ApiGatewayV2("Api");
-
-api.route("GET /", {
-  link: [bucket],
-  handler: "packages/functions/src/api.handler",
+// Create the API
+// We are creating an API using SST’s Api component. It creates an Amazon API Gateway HTTP API.
+export const api = new sst.aws.ApiGatewayV2("Api", {
+  // By using the transform prop we are telling the API that we want the given props to be applied to all the routes in our API.
+  transform: {
+    route: {
+      handler: {
+        // We are linking our DynamoDB table to our API using the link prop. This will allow our API to access our table.
+        link: [table],
+      },
+    },
+  },
 });
+
+// The first route we are adding to our API is the POST /notes route. It’ll be used to create a note.
+api.route("POST /notes", "packages/functions/src/create.main");
